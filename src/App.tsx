@@ -1,9 +1,11 @@
+import Form from "./Form";
+
 const App = () => {
-    return (
-        <>
-            <h1>Olá mundo!</h1>
-        </>
-    );
+   return (
+      <>
+         <Form />
+      </>
+   );
 };
 
 export default App;
