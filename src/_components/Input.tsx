@@ -19,9 +19,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                     {...props}
                     ref={ref}
                 />
-                <p className="text-xs font-medium text-red-400">
-                    {errorMessage}
-                </p>
+                <p className="mt-1 text-sm text-red-400">{errorMessage}</p>
             </div>
         );
     },

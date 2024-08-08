@@ -43,7 +43,6 @@ const Form = () => {
 
     const onSubmit = async (data: FieldValues) => {
         try {
-            // Realiza a requisição para a API
             const response = await fetch(
                 "https://apis.codante.io/api/register-user/register",
                 {
@@ -78,156 +77,136 @@ const Form = () => {
         }
     };
     return (
-        <form
-            className="flex h-screen flex-col items-center justify-center gap-4 p-5"
-            onSubmit={handleSubmit(onSubmit)}
-        >
-            <label className="w-full">
+        <div className="flex h-screen w-full items-center justify-center">
+            <form
+                className="flex w-full flex-col items-center justify-center gap-4 rounded-xl border border-gray-300 p-5"
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <Input
                     type="text"
                     placeholder="Nome Completo"
                     {...register("name")}
+                    errorMessage={errors.name?.message as string}
                 />
-                <p className="font-light text-red-400">
-                    {errors.name?.message as string}
-                </p>
-            </label>
 
-            <label className="w-full">
                 <Input
                     type="email"
                     placeholder="E-mail"
                     {...register("email")}
+                    errorMessage={errors.email?.message as string}
                 />
-                <p className="font-light text-red-400">
-                    {errors.email?.message as string}
-                </p>
-            </label>
 
-            <div className="relative w-full">
-                <Input
-                    type={passwordVisible ? "text" : "password"}
-                    placeholder="Senha"
-                    {...register("password")}
-                />
-                <p className="font-light text-red-400">
-                    {errors.password?.message as string}
-                </p>
-                <button
-                    className="absolute right-3 top-3"
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                >
-                    {passwordVisible ? (
-                        <EyeOff size={20} color="#5c5c5c" strokeWidth={1.25} />
-                    ) : (
-                        <Eye size={20} color="#5c5c5c" strokeWidth={1.25} />
-                    )}
-                </button>
-            </div>
+                <div className="relative w-full">
+                    <Input
+                        type={passwordVisible ? "text" : "password"}
+                        placeholder="Senha"
+                        {...register("password")}
+                        errorMessage={errors.password?.message as string}
+                    />
+                    <button
+                        className="absolute right-3 top-3"
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                    >
+                        {passwordVisible ? (
+                            <EyeOff
+                                size={20}
+                                color="#5c5c5c"
+                                strokeWidth={1.25}
+                            />
+                        ) : (
+                            <Eye size={20} color="#5c5c5c" strokeWidth={1.25} />
+                        )}
+                    </button>
+                </div>
 
-            <div className="relative w-full">
-                <Input
-                    type={passwordVisible ? "text" : "password"}
-                    placeholder="Confirmar Senha"
-                    {...register("password_confirmation")}
-                />
-                <p className="font-light text-red-400">
-                    {errors.password_confirmation?.message as string}
-                </p>
-                <button
-                    className="absolute right-3 top-3"
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                >
-                    {passwordVisible ? (
-                        <EyeOff size={20} color="#5c5c5c" strokeWidth={1.25} />
-                    ) : (
-                        <Eye size={20} color="#5c5c5c" strokeWidth={1.25} />
-                    )}
-                </button>
-            </div>
+                <div className="relative w-full">
+                    <Input
+                        type={passwordVisible ? "text" : "password"}
+                        placeholder="Confirmar Senha"
+                        {...register("password_confirmation")}
+                        errorMessage={
+                            errors.password_confirmation?.message as string
+                        }
+                    />
+                    <button
+                        className="absolute right-3 top-3"
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                    >
+                        {passwordVisible ? (
+                            <EyeOff
+                                size={20}
+                                color="#5c5c5c"
+                                strokeWidth={1.25}
+                            />
+                        ) : (
+                            <Eye size={20} color="#5c5c5c" strokeWidth={1.25} />
+                        )}
+                    </button>
+                </div>
 
-            <label className="w-full">
                 <Input
                     type="text"
                     placeholder="Celular"
                     {...registerWithMask("phone", "(99) 99999-9999")}
+                    errorMessage={errors.phone?.message as string}
                 />
-                <p className="font-light text-red-400">
-                    {errors.phone?.message as string}
-                </p>
-            </label>
 
-            <label className="w-full">
                 <Input
                     type="text"
                     placeholder="CPF"
                     {...registerWithMask("cpf", "999.999.999-99")}
+                    errorMessage={errors.cpf?.message as string}
                 />
-                <p className="font-light text-red-400">
-                    {errors.cpf?.message as string}
-                </p>
-            </label>
 
-            <label className="w-full">
                 <Input
                     type="text"
                     placeholder="CEP"
                     {...registerWithMask("zipcode", "99999-999", {
                         onBlur: handleZipCode,
                     })}
+                    errorMessage={errors.zipcode?.message as string}
                 />
-                <p className="font-light text-red-400">
-                    {errors.zipcode?.message as string}
-                </p>
-            </label>
 
-            <label className="w-full">
                 <Input
                     type="text"
                     placeholder="Endereço"
                     disabled
                     {...register("address")}
+                    errorMessage={errors.address?.message as string}
                 />
-                <p className="font-light text-red-400">
-                    {errors.address?.message as string}
-                </p>
-            </label>
 
-            <label className="w-full">
                 <Input
                     type="text"
                     placeholder="Cidade"
                     disabled
                     {...register("city")}
+                    errorMessage={errors.city?.message as string}
                 />
-                <p className="font-light text-red-400">
-                    {errors.city?.message as string}
-                </p>
-            </label>
 
-            <label className="flex flex-col items-center">
-                <div className="flex items-center gap-2">
-                    <Input
-                        className="accent-slate-500"
-                        type="checkbox"
-                        {...register("terms")}
-                    />
-                    <p className="whitespace-nowrap">
-                        Aceito os{" "}
-                        <span className="cursor-pointer font-medium underline">
-                            termos e condições
-                        </span>
+                <label className="flex flex-col items-center">
+                    <div className="flex items-center gap-2">
+                        <Input
+                            className="accent-slate-500"
+                            type="checkbox"
+                            {...register("terms")}
+                        />
+                        <p className="whitespace-nowrap">
+                            Aceito os{" "}
+                            <span className="cursor-pointer font-medium underline">
+                                termos e condições
+                            </span>
+                        </p>
+                    </div>
+                    <p className="mt-1 text-sm text-red-400">
+                        {errors.terms?.message as string}
                     </p>
-                </div>
-                <p className="font-light text-red-400">
-                    {errors.terms?.message as string}
-                </p>
-            </label>
+                </label>
 
-            <Button>Cadastrar</Button>
-        </form>
+                <Button>Cadastrar</Button>
+            </form>
+        </div>
     );
 };
 

@@ -5,7 +5,9 @@ const App = () => {
     return (
         <>
             <Toaster />
-            <Form />
+            <div className="mx-auto md:w-96">
+                <Form />
+            </div>
         </>
     );
 };
