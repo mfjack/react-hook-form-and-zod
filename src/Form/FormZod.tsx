@@ -1,16 +1,19 @@
-import { useState } from "react";
 import Button from "../_components/Button";
 import Input from "../_components/Input";
 
-import { Eye, EyeOff } from "lucide-react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useHookFormMask } from "use-mask-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserRegister, userRegisterSchema } from "../schema";
 import toast from "react-hot-toast";
+import NameInput from "./NameInput";
+import EmailInput from "./EmailInput";
+import PasswordInput from "./PasswordInput";
+import { useState } from "react";
 
 const Form = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
+
     const {
         register,
         handleSubmit,
@@ -26,8 +29,8 @@ const Form = () => {
         setPasswordVisible(!passwordVisible);
     };
 
-    const handleZipCode = async (e: React.FocusEvent<HTMLInputElement>) => {
-        const zipcode = e.target.value;
+    const handleZipCode = async (zipcode: string) => {
+        // const zipcode = e.target.value;
 
         try {
             const response = await fetch(
@@ -39,6 +42,18 @@ const Form = () => {
             setValue("address", data.street);
             setValue("city", data.city);
         } catch (error) {}
+    };
+
+    const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const zipcode = e.target.value;
+
+        // Remove qualquer caractere que não seja número
+        const numericZipcode = zipcode.replace(/\D/g, "");
+
+        // Verifica se o CEP tem 8 dígitos
+        if (numericZipcode.length === 8) {
+            handleZipCode(numericZipcode);
+        }
     };
 
     const onSubmit = async (data: FieldValues) => {
@@ -82,109 +97,61 @@ const Form = () => {
                 className="flex w-full flex-col items-center justify-center gap-4 rounded-xl border border-gray-300 p-5"
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <Input
-                    type="text"
-                    placeholder="Nome Completo"
-                    {...register("name")}
-                    errorMessage={errors.name?.message as string}
+                <NameInput
+                    register={register}
+                    errorMessage={errors.name?.message}
                 />
-
-                <Input
-                    type="email"
-                    placeholder="E-mail"
-                    {...register("email")}
-                    errorMessage={errors.email?.message as string}
+                <EmailInput register={register} errors={errors} />
+                <PasswordInput
+                    placeholder="Senha"
+                    name="password"
+                    register={register}
+                    passwordVisible={passwordVisible}
+                    togglePasswordVisibility={togglePasswordVisibility}
+                    errorMessage={errors.password?.message}
                 />
-
-                <div className="relative w-full">
-                    <Input
-                        type={passwordVisible ? "text" : "password"}
-                        placeholder="Senha"
-                        {...register("password")}
-                        errorMessage={errors.password?.message as string}
-                    />
-                    <button
-                        className="absolute right-3 top-3"
-                        type="button"
-                        onClick={togglePasswordVisibility}
-                    >
-                        {passwordVisible ? (
-                            <EyeOff
-                                size={20}
-                                color="#5c5c5c"
-                                strokeWidth={1.25}
-                            />
-                        ) : (
-                            <Eye size={20} color="#5c5c5c" strokeWidth={1.25} />
-                        )}
-                    </button>
-                </div>
-
-                <div className="relative w-full">
-                    <Input
-                        type={passwordVisible ? "text" : "password"}
-                        placeholder="Confirmar Senha"
-                        {...register("password_confirmation")}
-                        errorMessage={
-                            errors.password_confirmation?.message as string
-                        }
-                    />
-                    <button
-                        className="absolute right-3 top-3"
-                        type="button"
-                        onClick={togglePasswordVisibility}
-                    >
-                        {passwordVisible ? (
-                            <EyeOff
-                                size={20}
-                                color="#5c5c5c"
-                                strokeWidth={1.25}
-                            />
-                        ) : (
-                            <Eye size={20} color="#5c5c5c" strokeWidth={1.25} />
-                        )}
-                    </button>
-                </div>
-
+                <PasswordInput
+                    placeholder="Confirmar Senha"
+                    name="password_confirmation"
+                    register={register}
+                    passwordVisible={passwordVisible}
+                    togglePasswordVisibility={togglePasswordVisibility}
+                    errorMessage={errors.password_confirmation?.message}
+                />
                 <Input
                     type="text"
                     placeholder="Celular"
                     {...registerWithMask("phone", "(99) 99999-9999")}
                     errorMessage={errors.phone?.message as string}
                 />
-
                 <Input
                     type="text"
                     placeholder="CPF"
                     {...registerWithMask("cpf", "999.999.999-99")}
                     errorMessage={errors.cpf?.message as string}
                 />
-
                 <Input
                     type="text"
                     placeholder="CEP"
                     {...registerWithMask("zipcode", "99999-999", {
-                        onBlur: handleZipCode,
+                        onChange: handleZipCodeChange,
                     })}
                     errorMessage={errors.zipcode?.message as string}
                 />
-
                 <Input
                     type="text"
                     placeholder="Endereço"
                     disabled
                     {...register("address")}
-                    errorMessage={errors.address?.message as string}
+                    // errorMessage={errors.address?.message as string}
                 />
-
                 <Input
                     type="text"
                     placeholder="Cidade"
                     disabled
                     {...register("city")}
-                    errorMessage={errors.city?.message as string}
+                    // errorMessage={errors.city?.message as string}
                 />
-
                 <label className="flex flex-col items-center">
                     <div className="flex items-center gap-2">
                         <Input
@@ -203,8 +170,7 @@ const Form = () => {
                         {errors.terms?.message as string}
                     </p>
                 </label>
-
-                <Button>Cadastrar</Button>
+                <Button type="submit">Cadastrar</Button>
             </form>
         </div>
     );

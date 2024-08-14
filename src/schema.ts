@@ -25,11 +25,11 @@ export const userRegisterSchema = z
             .regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Telefone inválido."),
         cpf: z
             .string()
-            .min(1, "O campo cpf é obrigatório")
+            .min(1, "O campo CPF é obrigatório")
             .regex(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/, "CPF inválido."),
         zipcode: z
             .string()
-            .min(1, "O campo cep é obrigatório")
+            .min(1, "O campo CEP é obrigatório")
             .regex(/^\d{5}-\d{3}$/, "CEP inválido."),
         address: z.string().min(1, "O campo endereço é obrigatório"),
         city: z.string().min(1, "O campo cidade é obrigatório"),
